@@ -23,6 +23,7 @@ import org.apache.ibatis.scripting.ScriptingException;
 import org.apache.ibatis.type.SimpleTypeRegistry;
 
 /**
+ * 保存包含 ${} 的节点
  * @author Clinton Begin
  */
 public class TextSqlNode implements SqlNode {
@@ -48,6 +49,7 @@ public class TextSqlNode implements SqlNode {
   @Override
   public boolean apply(DynamicContext context) {
     GenericTokenParser parser = createParser(new BindingTokenParser(context, injectionFilter));
+    // 将 ${} 替换为实际的参数
     context.appendSql(parser.parse(text));
     return true;
   }

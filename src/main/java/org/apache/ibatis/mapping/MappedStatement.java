@@ -302,6 +302,7 @@ public final class MappedStatement {
   }
 
   public BoundSql getBoundSql(Object parameterObject) {
+    // 如果sql中存在动态标签或者${}，那么这里sqlSource就是RawSqlSource，RawSqlSource会在构造器中把 #{} 替换为 ?
     BoundSql boundSql = sqlSource.getBoundSql(parameterObject);
     List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
     if (parameterMappings == null || parameterMappings.isEmpty()) {

@@ -103,19 +103,31 @@ public class XMLConfigBuilder extends BaseBuilder {
   private void parseConfiguration(XNode root) {
     try {
       // issue #117 read properties first
+      // 将properties设置进configuration的variables里
       propertiesElement(root.evalNode("properties"));
+      // 获取settings配置
       Properties settings = settingsAsProperties(root.evalNode("settings"));
+      // configuration.setVfsImpl
       loadCustomVfs(settings);
+      // configuration.setLogImpl
       loadCustomLogImpl(settings);
+      // 将别名设置到configuration的typeAliasRegistry中
       typeAliasesElement(root.evalNode("typeAliases"));
+      // 将plugin添加到configuration的interceptorChain中， interceptorChain中有一个List<Interceptor>
       pluginElement(root.evalNode("plugins"));
+      // 设置configuration的objectFactory
       objectFactoryElement(root.evalNode("objectFactory"));
+      // 设置configuration的objectWrapperFactory
       objectWrapperFactoryElement(root.evalNode("objectWrapperFactory"));
+      // 设置configuration的reflectorFactory
       reflectorFactoryElement(root.evalNode("reflectorFactory"));
+      // 使用settings节点中解析的配置设置configuration中的其他属性
       settingsElement(settings);
       // read it after objectFactory and objectWrapperFactory issue #631
+      // 设置configuration的environment，environment是transactionFactory和datasource的封装
       environmentsElement(root.evalNode("environments"));
       databaseIdProviderElement(root.evalNode("databaseIdProvider"));
+      // 设置configuration的typeHandlerRegistry
       typeHandlerElement(root.evalNode("typeHandlers"));
       mapperElement(root.evalNode("mappers"));
     } catch (Exception e) {
