@@ -91,12 +91,17 @@ public class XMLMapperBuilder extends BaseBuilder {
   }
 
   public void parse() {
+    // 判断映射文件是否已经解析
     if (!configuration.isResourceLoaded(resource)) {
+      // 解析mapper节点
       configurationElement(parser.evalNode("/mapper"));
+      // 添加到已解析资源集合中
       configuration.addLoadedResource(resource);
+      // 通过命名空间绑定mapper接口
       bindMapperForNamespace();
     }
 
+    // 处理未完成解析的节点
     parsePendingResultMaps();
     parsePendingCacheRefs();
     parsePendingStatements();
@@ -114,6 +119,8 @@ public class XMLMapperBuilder extends BaseBuilder {
       }
       builderAssistant.setCurrentNamespace(namespace);
       cacheRefElement(context.evalNode("cache-ref"));
+      // <cache/>节点用于开启二级缓存。
+      // 解析Cache节点，将解析出的cache对象添加到configuration的caches中，caches是以namespace为key，Cache对象为value的map
       cacheElement(context.evalNode("cache"));
       parameterMapElement(context.evalNodes("/mapper/parameterMap"));
       resultMapElements(context.evalNodes("/mapper/resultMap"));
@@ -275,11 +282,14 @@ public class XMLMapperBuilder extends BaseBuilder {
       } else {
         List<ResultFlag> flags = new ArrayList<>();
         if ("id".equals(resultChild.getName())) {
+          // 如果是id标签，放入一个ID flag
           flags.add(ResultFlag.ID);
         }
+        // 解析<resultMap>的子节点
         resultMappings.add(buildResultMappingFromContext(resultChild, typeClass, flags));
       }
     }
+    // 获取id属性，如果没有指定id属性，则使用getValueBasedIdentifier()生成id
     String id = resultMapNode.getStringAttribute("id",
             resultMapNode.getValueBasedIdentifier());
     String extend = resultMapNode.getStringAttribute("extends");
@@ -379,6 +389,7 @@ public class XMLMapperBuilder extends BaseBuilder {
     String javaType = context.getStringAttribute("javaType");
     String jdbcType = context.getStringAttribute("jdbcType");
     String nestedSelect = context.getStringAttribute("select");
+    // 这里用来处理<association>, <collection>, <case>三种节点
     String nestedResultMap = context.getStringAttribute("resultMap", () ->
         processNestedResultMappings(context, Collections.emptyList(), resultType));
     String notNullColumn = context.getStringAttribute("notNullColumn");

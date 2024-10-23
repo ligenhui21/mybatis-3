@@ -42,6 +42,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 public interface Cache {
 
   /**
+   * 所属namespace
    * @return The identifier of this cache
    */
   String getId();

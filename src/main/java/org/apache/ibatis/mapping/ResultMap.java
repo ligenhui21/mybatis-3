@@ -43,10 +43,14 @@ public class ResultMap {
   private List<ResultMapping> idResultMappings;
   private List<ResultMapping> constructorResultMappings;
   private List<ResultMapping> propertyResultMappings;
+  // 该resultMap包含的column集合
   private Set<String> mappedColumns;
+  // 该resultMap包含的properties集合
   private Set<String> mappedProperties;
   private Discriminator discriminator;
+  // 是否有嵌套ResultMap
   private boolean hasNestedResultMaps;
+  // 是否有子查询
   private boolean hasNestedQueries;
   private Boolean autoMapping;
 

@@ -375,6 +375,27 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
   }
 
+  /**
+   * 方式一
+   * <mappers>
+   *   <mapper resource="org/mybatis/builder/AuthorMapper.xml"/>
+   * </mappers>
+   *
+   * 方式二
+   * <mappers>
+   *   <mapper url="file:///var/mappers/AuthorMapper.xml"/>
+   * </mappers>
+   *
+   * 方式三
+   * <mappers>
+   *   <mapper class="org.mybatis.builder.AuthorMapper"/>
+   * </mappers>
+   *
+   * 配置package的方式，for循环中是使用方式三的方式解析
+   * <mappers>
+   *   <package name="org.mybatis.builder"/>
+   * </mappers>
+   */
   private void mapperElement(XNode parent) throws Exception {
     if (parent != null) {
       for (XNode child : parent.getChildren()) {
