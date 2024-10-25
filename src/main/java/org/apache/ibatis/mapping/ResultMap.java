@@ -37,11 +37,18 @@ import org.apache.ibatis.session.Configuration;
 public class ResultMap {
   private Configuration configuration;
 
+  // ResultMap 的id
   private String id;
+  // ResultMap 的type
   private Class<?> type;
+
+  // ResultMap的<id>、<result>、<constructor>的<idArg>、<arg>都会解析封装为ResultMapping
   private List<ResultMapping> resultMappings;
+  // ResultMap的<id>、<constructor>的<idArg> 会被放到idResultMappings
   private List<ResultMapping> idResultMappings;
+  // <constructor>的字标签对应的ResultMapping会被放到constructorResultMappings
   private List<ResultMapping> constructorResultMappings;
+  // ResultMap的<id>、<result> 对应的ResultMapping会被放到propertyResultMappings
   private List<ResultMapping> propertyResultMappings;
   // 该resultMap包含的column集合
   private Set<String> mappedColumns;

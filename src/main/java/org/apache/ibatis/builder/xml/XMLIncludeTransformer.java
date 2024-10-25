@@ -60,7 +60,11 @@ public class XMLIncludeTransformer {
    */
   private void applyIncludes(Node source, final Properties variablesContext, boolean included) {
     if ("include".equals(source.getNodeName())) {
+      // 获取include的<sql>节点，refid可以使用${}占位符，这里传入variablesContext就是为了替换占位符。
+      // 在之前解析<sql>节点的时候，会将sql节点存入configuration的sqlFragments中
       Node toInclude = findSqlFragment(getStringAttribute(source, "refid"), variablesContext);
+      // 解析<include>节点的<property>子节点
+      // <include>节点也可以使用<property>子节点来定义变量，也是用于替换<sql>节点中的${}占位符
       Properties toIncludeContext = getVariablesContext(source, variablesContext);
       applyIncludes(toInclude, toIncludeContext, true);
       if (toInclude.getOwnerDocument() != source.getOwnerDocument()) {
@@ -72,6 +76,7 @@ public class XMLIncludeTransformer {
       }
       toInclude.getParentNode().removeChild(toInclude);
     } else if (source.getNodeType() == Node.ELEMENT_NODE) {
+      // 下边这个if只有分支一中的递归调用和下边的递归调用会走到这里
       if (included && !variablesContext.isEmpty()) {
         // replace variables in attribute values
         NamedNodeMap attributes = source.getAttributes();
