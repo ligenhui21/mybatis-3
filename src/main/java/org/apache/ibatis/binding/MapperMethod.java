@@ -139,6 +139,8 @@ public class MapperMethod {
 
   private <E> Object executeForMany(SqlSession sqlSession, Object[] args) {
     List<E> result;
+    // 这里是把实参和参数名绑定起来，如果是多个参数，返回的就是参数名和参数值的map；如果是一个参数，返回的就是参数值
+    // ，MethodSignature中的ParamNameResolver存了参数索引和参数名的映射，通过这个映射到args数组中找到对应的实参进行绑定
     Object param = method.convertArgsToSqlCommandParam(args);
     if (method.hasRowBounds()) {
       RowBounds rowBounds = method.extractRowBounds(args);
